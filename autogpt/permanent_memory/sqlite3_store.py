@@ -89,9 +89,9 @@ class MemoryDB:
         cnx.commit()
 
     def search(self, text):
-        cmd_str = f"SELECT * FROM text('{text}')"
+        cmd_str = f"SELECT * FROM text(?)"
         cnx = self.get_cnx()
-        rows = cnx.execute(cmd_str).fetchall()
+        rows = cnx.execute(cmd_str, (text, )).fetchall()
         lines = []
         for r in rows:
             lines.append(r[2])
