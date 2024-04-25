@@ -36,7 +36,7 @@ class MemoryDB:
     # Get the highest session id. Initially 0.
     def get_max_session_id(self):
         id = None
-        cmd_str = f"SELECT MAX(session) FROM text;"
+        cmd_str = "SELECT MAX(session) FROM text;"
         cnx = self.get_cnx()
         max_id = cnx.execute(cmd_str).fetchone()[0]
         if max_id is None:  # New db, session 0
@@ -63,7 +63,7 @@ class MemoryDB:
         if text is not None:
             key = self.get_next_key()
             session_id = self.session_id
-            cmd_str = f"REPLACE INTO text(session, key, block) \
+            cmd_str = "REPLACE INTO text(session, key, block) \
                 VALUES (?, ?, ?);"
             cnx = self.get_cnx()
             cnx.execute(cmd_str, (session_id, key, text))
@@ -73,7 +73,7 @@ class MemoryDB:
     def overwrite(self, key, text):
         self.delete_memory(key)
         session_id = self.session_id
-        cmd_str = f"REPLACE INTO text(session, key, block) \
+        cmd_str = "REPLACE INTO text(session, key, block) \
             VALUES (?, ?, ?);"
         cnx = self.get_cnx()
         cnx.execute(cmd_str, (session_id, key, text))
@@ -89,9 +89,9 @@ class MemoryDB:
         cnx.commit()
 
     def search(self, text):
-        cmd_str = f"SELECT * FROM text('{text}')"
+        cmd_str = "SELECT * FROM text(?)"
         cnx = self.get_cnx()
-        rows = cnx.execute(cmd_str).fetchall()
+        rows = cnx.execute(cmd_str, (text, )).fetchall()
         lines = []
         for r in rows:
             lines.append(r[2])
