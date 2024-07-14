@@ -148,7 +148,7 @@ class Config(metaclass=Singleton):
         """
         try:
             with open(config_file) as file:
-                config_params = yaml.load(file, Loader=yaml.FullLoader)
+                config_params = yaml.load(file, Loader=yaml.SafeLoader)
         except FileNotFoundError:
             config_params = {}
         self.openai_api_type = config_params.get("azure_api_type") or "azure"
