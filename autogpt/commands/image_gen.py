@@ -59,7 +59,7 @@ def generate_image_with_hf(prompt: str, filename: str) -> str:
         json={
             "inputs": prompt,
         },
-    )
+    timeout=60)
 
     image = Image.open(io.BytesIO(response.content))
     print(f"Image Generated for prompt:{prompt}")
