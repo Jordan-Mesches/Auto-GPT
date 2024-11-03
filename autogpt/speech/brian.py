@@ -1,10 +1,9 @@
 """ Brian speech module for autogpt """
 import os
-
-import requests
 from playsound import playsound
 
 from autogpt.speech.base import VoiceBase
+from security import safe_requests
 
 
 class BrianSpeech(VoiceBase):
@@ -26,7 +25,7 @@ class BrianSpeech(VoiceBase):
         tts_url = (
             f"https://api.streamelements.com/kappa/v2/speech?voice=Brian&text={text}"
         )
-        response = requests.get(tts_url)
+        response = safe_requests.get(tts_url)
 
         if response.status_code == 200:
             with open("speech.mp3", "wb") as f:
