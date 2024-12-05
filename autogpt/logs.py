@@ -2,7 +2,6 @@
 import json
 import logging
 import os
-import random
 import re
 import time
 import traceback
@@ -12,6 +11,7 @@ from colorama import Fore, Style
 
 from autogpt.config import Config, Singleton
 from autogpt.speech import say_text
+import secrets
 
 CFG = Config()
 
@@ -152,7 +152,7 @@ class TypingConsoleHandler(logging.StreamHandler):
                 print(word, end="", flush=True)
                 if i < len(words) - 1:
                     print(" ", end="", flush=True)
-                typing_speed = random.uniform(min_typing_speed, max_typing_speed)
+                typing_speed = secrets.SystemRandom().uniform(min_typing_speed, max_typing_speed)
                 time.sleep(typing_speed)
                 # type faster after each word
                 min_typing_speed = min_typing_speed * 0.95
