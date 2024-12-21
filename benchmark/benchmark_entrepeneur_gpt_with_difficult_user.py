@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+from security import safe_command
 
 
 def benchmark_entrepeneur_gpt_with_difficult_user():
@@ -77,8 +78,7 @@ Not what I need."""
 
     command = f"{sys.executable} -m autogpt"
 
-    process = subprocess.Popen(
-        command,
+    process = safe_command.run(subprocess.Popen, command,
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
