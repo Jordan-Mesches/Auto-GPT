@@ -30,7 +30,7 @@ def read_audio(audio):
         api_url,
         headers=headers,
         data=audio,
-    )
+    timeout=60)
 
     text = json.loads(response.content.decode("utf-8"))["text"]
     return "The audio says: " + text
