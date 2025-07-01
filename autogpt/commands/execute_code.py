@@ -6,6 +6,7 @@ import docker
 from docker.errors import ImageNotFound
 
 from autogpt.workspace import WORKSPACE_PATH, path_in_workspace
+from security import safe_command
 
 
 def execute_python_file(file: str) -> str:
@@ -29,8 +30,7 @@ def execute_python_file(file: str) -> str:
         return f"Error: File '{file}' does not exist."
 
     if we_are_running_in_a_docker_container():
-        result = subprocess.run(
-            f"python {file_path}", capture_output=True, encoding="utf8", shell=True
+        result = safe_command.run(subprocess.run, f"python {file_path}", capture_output=True, encoding="utf8", shell=True
         )
         if result.returncode == 0:
             return result.stdout
@@ -104,7 +104,7 @@ def execute_shell(command_line: str) -> str:
 
     print(f"Executing command '{command_line}' in working directory '{os.getcwd()}'")
 
-    result = subprocess.run(command_line, capture_output=True, shell=True)
+    result = safe_command.run(subprocess.run, command_line, capture_output=True, shell=True)
     output = f"STDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
 
     # Change back to whatever the prior working dir was
@@ -132,8 +132,7 @@ def execute_shell_popen(command_line) -> str:
     print(f"Executing command '{command_line}' in working directory '{os.getcwd()}'")
 
     do_not_show_output = subprocess.DEVNULL
-    process = subprocess.Popen(
-        command_line, shell=True, stdout=do_not_show_output, stderr=do_not_show_output
+    process = safe_command.run(subprocess.Popen, command_line, shell=True, stdout=do_not_show_output, stderr=do_not_show_output
     )
 
     # Change back to whatever the prior working dir was
